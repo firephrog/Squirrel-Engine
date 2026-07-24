@@ -1,0 +1,12 @@
+# Rust build artifacts
+/physics/target/
+/render/target/
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

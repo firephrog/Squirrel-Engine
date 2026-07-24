@@ -1,0 +1,42 @@
+[package]
+name = "squirrel-physics"
+version = "0.1.0"
+edition = "2021"
+description = "WASM physics core: a Rapier-based, netcode-first engine (tiers, custom forces, kinematic character controller, cheap snapshots) per physics-engine-report.md."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+
+# The physics core. We build ON Rapier and extend it (custom force
+# accumulation, the tier side-tables, a tuned snapshot serializer) rather than
+# reimplementing a solver — the report's "fork/extend, don't reinvent" call.
+# `enhanced-determinism` is on so the client and a future native server produce
+# bit-identical results from identical inputs (report Part 1/3). It is mutually
+# exclusive with `simd`/`parallel`, which is exactly right for a single-thread
+# wasm build.
+# Keep Rapier's default features (dim3 + f32 + std); just add
+# enhanced-determinism. `parallel` and the SIMD features stay off — exactly
+# right for a single-thread wasm build, and required for determinism anyway.
+[dependencies.rapier3d]
+version = "0.34"
+features = ["enhanced-determinism"]
+
+# Small, readable panic messages in the browser console.
+[dependencies.console_error_panic_hook]
+version = "0.1"
+optional = true
+
+[features]
+default = ["console_error_panic_hook"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ["-O4"]

@@ -1,0 +1,31 @@
+[package]
+name = "squirrel-engine"
+version = "0.1.0"
+edition = "2021"
+description = "WASM side of a WebGPU 3D engine: math, scene, transforms, and the packed per-frame command stream."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+
+# Small, fast panic messages in the browser console.
+[dependencies.console_error_panic_hook]
+version = "0.1"
+optional = true
+
+[features]
+default = ["console_error_panic_hook"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+# No unwinding machinery in the .wasm — smaller and faster call paths. The
+# panic hook still prints the message before the abort trap.
+panic = "abort"
+
+# Post-process the wasm-bindgen output with binaryen's most aggressive preset.
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ["-O4"]

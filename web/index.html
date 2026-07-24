@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Squirrel Engine Ballpit Test</title>
+  <style>
+    :root { color-scheme: dark; }
+    html, body { margin: 0; height: 100%; background: #0a0d18; overflow: hidden; }
+    #gpu-canvas { display: block; width: 100vw; height: 100vh; cursor: crosshair; }
+    #hud {
+      position: fixed; top: 12px; left: 14px;
+      font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #d8e0f0; text-shadow: 0 1px 2px #000;
+      pointer-events: none; user-select: none;
+    }
+    #hud b { color: #ffd24a; }
+    #hud .dim { color: #8fa0c0; }
+  </style>
+</head>
+<body>
+  <canvas id="gpu-canvas"></canvas>
+  <div id="hud">loading…</div>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
